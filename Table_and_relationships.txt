@@ -1,0 +1,31 @@
+Customer Table:
+create table customer(
+cId int primary key auto_increment,
+cfirstName varchar(20),
+cLastName varchar(20),
+email varchar(50) unique,
+zipcode int,
+state varchar(30),
+address varchar(120)
+);
+
+Accounts Table 
+create table Accounts(
+AccountId int primary key auto_increment = 120,
+cid int,
+balance int,
+foriegn key(cid) references customer(cId)
+);
+
+Customer and Account have one to many relationship
+
+Transactions Table
+
+create table transactions(
+transactionId int auto_increment = 300,
+type varchar(20),
+Amount int,
+accountId int,
+foreign key (accountId) references Accounts(AccountId)
+);
+Accounts table and Transaction table has a many to one relationship.

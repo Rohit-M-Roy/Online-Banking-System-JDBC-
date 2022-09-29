@@ -2,18 +2,18 @@ package com.sensitiveMeat4664.bean;
 
 import java.util.Objects;
 
-public class Transactions {
+public class Transaction {
 	
 	private int transactionId;
 	private String transactionType;
 	private int transactionAmount;
 	private int AccountIdRelatedToTheTransaction;
 	
-	Transactions(){
+	Transaction(){
 		
 	}
 	
-	Transactions(int id, String type, int amount, int accountid){
+	Transaction(int id, String type, int amount, int accountid){
 		setTransactionId(id);
 		setTransactionType(type);
 		setTransactionAmount(amount);
@@ -65,7 +65,7 @@ public class Transactions {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Transactions other = (Transactions) obj;
+		Transaction other = (Transaction) obj;
 		return transactionId == other.transactionId;
 	}
 

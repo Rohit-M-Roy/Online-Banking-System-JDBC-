@@ -4,6 +4,7 @@ create table customer(
 cId int primary key auto_increment,
 cfirstName varchar(20),
 cLastName varchar(20),
+mobile int unique,
 email varchar(50) unique,
 zipcode int,
 state varchar(30),
@@ -12,20 +13,31 @@ address varchar(120)
 
 Accounts Table 
 create table Accounts(
-AccountId int primary key auto_increment = 120,
+AccountId int primary key auto_increment,
 cid int,
-balance int,
-foriegn key(cid) references customer(cId)
+balance int not null default 0,
+foreign key (cid) references customer(cId)
 );
+
+To start autoincrement from 120:
+ALTER table accounts auto_increment = 120;
 
 Customer and Account have one to many relationship
 
 Transactions Table
 
 create table transactions(
-transactionId int auto_increment = 300,
+transactionId int primary key auto_increment,
 type varchar(20),
 Amount int,
 accountId int,
 foreign key (accountId) references Accounts(AccountId)
 );
+Accounts table and Transaction table has a many to one relationship.
+
+To start autoincrement from 300:
+ALTER table transactions auto_increment = 300;
+
+
+Balance cannot be null so not null used along with default value = 0;
+

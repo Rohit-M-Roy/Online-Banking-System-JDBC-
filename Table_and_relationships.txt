@@ -1,3 +1,4 @@
+
 Customer Table:
 create table customer(
 cId int primary key auto_increment,
@@ -39,3 +40,4 @@ ALTER table transactions auto_increment = 300;
 
 
 Balance cannot be null so not null used along with default value = 0;
+

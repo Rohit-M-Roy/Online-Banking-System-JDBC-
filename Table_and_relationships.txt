@@ -1,3 +1,4 @@
+
 Customer Table:
 create table customer(
 cId int primary key auto_increment,
@@ -28,4 +29,3 @@ Amount int,
 accountId int,
 foreign key (accountId) references Accounts(AccountId)
 );
-Accounts table and Transaction table has a many to one relationship.

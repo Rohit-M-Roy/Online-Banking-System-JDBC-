@@ -2,20 +2,28 @@ package com.sensitiveMeat4664.bean;
 
 import java.util.Objects;
 
-public class Accounts {
+public class Account {
 	
 	private int accountNumber;
-	private int customerId;
+	private long mobile;
 	private int balance;
 	
-	Accounts(){
+	Account(){
 		
 	}
 	
-	Accounts(int number, int id, int balance){
-		setAccountNumber(number);
-		setCustomerId(id);
+	public Account(int accountNo,long mobile, int balance){
+		setAccountNumber(accountNo);
+		setMobile(mobile);
 		setBalance(balance);
+	}
+
+	public long getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(long mobile) {
+		this.mobile = mobile;
 	}
 
 	public int getAccountNumber() {
@@ -24,14 +32,6 @@ public class Accounts {
 
 	public void setAccountNumber(int accountNumber) {
 		this.accountNumber = accountNumber;
-	}
-
-	public int getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
 	}
 
 	public int getBalance() {
@@ -55,14 +55,16 @@ public class Accounts {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Accounts other = (Accounts) obj;
+		Account other = (Account) obj;
 		return accountNumber == other.accountNumber;
 	}
 
 	@Override
 	public String toString() {
-		return "Accounts [accountNumber=" + accountNumber + ", customerId=" + customerId + ", balance=" + balance + "]";
+		return "Account [accountNumber=" + accountNumber + ", mobile=" + mobile + ", balance=" + balance + "]";
 	}
+
+	
 	
 	
 

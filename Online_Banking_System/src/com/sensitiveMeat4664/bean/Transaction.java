@@ -9,11 +9,11 @@ public class Transaction {
 	private int transactionAmount;
 	private int AccountIdRelatedToTheTransaction;
 	
-	Transaction(){
+	public Transaction(){
 		
 	}
 	
-	Transaction(int id, String type, int amount, int accountid){
+	public Transaction(int id, String type, int amount, int accountid){
 		setTransactionId(id);
 		setTransactionType(type);
 		setTransactionAmount(amount);

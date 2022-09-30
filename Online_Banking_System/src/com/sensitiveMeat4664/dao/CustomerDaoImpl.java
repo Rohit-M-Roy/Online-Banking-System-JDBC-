@@ -10,7 +10,7 @@ import com.sensitiveMeat4664.bean.Customer;
 import com.sensitiveMeat4664.exceptions.CustomerException;
 import com.sensitiveMeat4664.utility.DBConnectionUtil;
 
-public abstract class CustomerDaoImpl implements CustomerDao{
+public class CustomerDaoImpl implements CustomerDao{
 
 	@Override
 	public String registerCustomer(Customer customer) throws CustomerException{

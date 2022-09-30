@@ -1,10 +1,9 @@
-
 Customer Table:
 create table customer(
 cId int primary key auto_increment,
 cfirstName varchar(20),
 cLastName varchar(20),
-mobile int unique,
+mobile bigint unique,
 email varchar(50) unique,
 zipcode int,
 state varchar(30),
@@ -14,9 +13,9 @@ address varchar(120)
 Accounts Table 
 create table Accounts(
 AccountId int primary key auto_increment,
-cid int,
+AccMobile bigint,
 balance int not null default 0,
-foreign key (cid) references customer(cId)
+foreign key (AccMobile) references customer(mobile)
 );
 
 To start autoincrement from 120:
@@ -40,4 +39,3 @@ ALTER table transactions auto_increment = 300;
 
 
 Balance cannot be null so not null used along with default value = 0;
-

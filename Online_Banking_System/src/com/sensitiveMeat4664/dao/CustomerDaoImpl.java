@@ -4,14 +4,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.sensitiveMeat4664.bean.Account;
 import com.sensitiveMeat4664.bean.Customer;
+import com.sensitiveMeat4664.bean.Transaction;
 import com.sensitiveMeat4664.exceptions.CustomerException;
 import com.sensitiveMeat4664.utility.DBConnectionUtil;
 
 public class CustomerDaoImpl implements CustomerDao{
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> main
 	@Override
 	public String registerCustomer(Customer customer) throws CustomerException{
 		
@@ -42,6 +49,7 @@ public class CustomerDaoImpl implements CustomerDao{
 		return message;
 	}
 
+	
 	@Override
 	public Account createAccount(long mobileNumber, int initialBalance) throws CustomerException {
 		
@@ -93,8 +101,7 @@ public class CustomerDaoImpl implements CustomerDao{
 		
 		return account;
 	}
-
-	
+		
 	
 	@Override
 	public boolean checkPresentCustomer(long mobileNumber) {
@@ -118,6 +125,7 @@ public class CustomerDaoImpl implements CustomerDao{
 		
 	}
 	
+	
 	public static void transactionEntry(int accountNumber, int amount,String transactionType) {
 		
 		try(Connection conn = DBConnectionUtil.dbConnector()){
@@ -139,12 +147,149 @@ public class CustomerDaoImpl implements CustomerDao{
 	}
 
 	@Override
-	public Account transferMoney(int accountNumber1, int accountNumber2, int transferAmount) {
+	public Account transferMoney(int accountNumber1, int accountNumber2, int transferAmount) throws CustomerException {
 		
 		Account senderAccount = null;
 		
+		try(Connection conn = DBConnectionUtil.dbConnector()){
+			
+			int acc1Balance = 0;
+			
+			//check if account2 is present
+			PreparedStatement ps = conn.prepareStatement("select * from accounts where accountId = ?");
+			
+			ps.setInt(1, accountNumber2);
+			
+			ResultSet result = ps.executeQuery();
+			//account 2 Exsists
+			if(result.next()) {
+				
+				
+				//check for enough balance
+				ps.setInt(1, accountNumber1);
+				
+				ResultSet account1Details = ps.executeQuery();
+				
+				if(account1Details.next()) {
+					
+					acc1Balance = account1Details.getInt("balance");
+					//check eligibility for transfer
+					if(acc1Balance < transferAmount) {
+						
+						throw new CustomerException("Not enough Balance for transfer");
+					}
+					
+					
+					PreparedStatement debitFromAccount1 = conn.prepareStatement("update accounts set balance = balance - ? where accountId = ?");
+					
+					debitFromAccount1.setInt(1, transferAmount);
+					debitFromAccount1.setInt(2, accountNumber1);
+					
+					int checkdebit = debitFromAccount1.executeUpdate();
+					
+					if(checkdebit > 0) {
+						System.out.println("Money out of acc1");
+						
+						//setting return package
+						ps.setInt(1, accountNumber1);
+						ResultSet account1DetailsAfterTransfer = ps.executeQuery();
+						
+						if(account1DetailsAfterTransfer.next()) {
+						senderAccount = new Account();
+						
+						senderAccount.setAccountNumber(account1DetailsAfterTransfer.getInt("AccountId"));
+						senderAccount.setMobile(account1DetailsAfterTransfer.getLong("AccMobile"));
+						senderAccount.setBalance(account1DetailsAfterTransfer.getInt("balance"));
+						}
+						
+						PreparedStatement creditInAccount2 = conn.prepareStatement("update accounts set balance = balance + ? where accountId = ?");
+						
+						creditInAccount2.setInt(1, transferAmount);
+						creditInAccount2.setInt(2, accountNumber2);
+						
+						int checkCredit = creditInAccount2.executeUpdate();
+						if(checkCredit > 0) {
+							
+							System.out.println("Transfer successull");
+							
+							//Tracking into Transation Table
+							
+							PreparedStatement trackDebitAndCredit = conn.prepareStatement("insert into transactions (type,amount,accountId) values(?,?,?)");
+							
+							trackDebitAndCredit.setString(1, "debit");
+							trackDebitAndCredit.setInt(2, -transferAmount);
+							trackDebitAndCredit.setInt(3, accountNumber1);
+							
+							trackDebitAndCredit.executeUpdate();
+							
+							trackDebitAndCredit.setString(1, "credit");
+							trackDebitAndCredit.setInt(2, transferAmount);
+							trackDebitAndCredit.setInt(3, accountNumber2);
+							
+						}
+						
+						
+					}else {
+						
+						throw new CustomerException("Problem in money transfer");
+					}
+					
+				}
+				
+			}else {
+				throw new CustomerException("No such account in the database");
+			}
+			
+		}catch(SQLException e) {
+//			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		
 		return senderAccount;
 		
+	}
+
+
+	
+	
+	@Override
+	public List<Transaction> veiwTransactionHistory(int accountNumber) throws CustomerException {
+		
+		List<Transaction> transactionHistory = new ArrayList<>();
+		
+		try(Connection conn = DBConnectionUtil.dbConnector()){
+			
+			PreparedStatement ps = conn.prepareStatement("select * from transactions where accountId = ?");
+			
+			ps.setInt(1, accountNumber);
+			
+			ResultSet transactionSet = ps.executeQuery();
+			
+			while(transactionSet.next()) {
+				
+				Transaction transaction = new Transaction();
+				
+				transaction.setTransactionId(transactionSet.getInt("transactionId"));
+				transaction.setTransactionType(transactionSet.getString("type"));
+				transaction.setTransactionAmount(transactionSet.getInt("amount"));
+				transaction.setAccountIdRelatedToTheTransaction(transactionSet.getInt("accountId"));
+				
+				transactionHistory.add(transaction);
+				
+				
+				
+			}
+			
+			if(transactionHistory.isEmpty())
+				throw new CustomerException("No transactions. . .");
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return transactionHistory;
 	}
 	
 

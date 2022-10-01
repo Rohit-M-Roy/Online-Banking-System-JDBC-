@@ -14,11 +14,7 @@ import com.sensitiveMeat4664.exceptions.CustomerException;
 import com.sensitiveMeat4664.utility.DBConnectionUtil;
 
 public class CustomerDaoImpl implements CustomerDao{
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> main
 	@Override
 	public String registerCustomer(Customer customer) throws CustomerException{
 		
@@ -290,6 +286,108 @@ public class CustomerDaoImpl implements CustomerDao{
 		
 		
 		return transactionHistory;
+	}
+
+
+	@Override
+	public int depositMoney(int accountNo, int amount) throws CustomerException {
+		int finalBalance = 0;
+		
+		try(Connection conn = DBConnectionUtil.dbConnector()){
+			
+			//check if account2 is present
+			PreparedStatement ps = conn.prepareStatement("select * from accounts where accountId = ?");
+			
+			ps.setInt(1, accountNo);
+			
+			ResultSet result = ps.executeQuery();
+			
+			if(result.next()) {
+				
+				PreparedStatement depositStatement = conn.prepareStatement("update accounts set balance = balance + ? where accountId = ?");
+				
+				depositStatement.setInt(1, amount);
+				depositStatement.setInt(2, accountNo);
+				
+				int x = depositStatement.executeUpdate();
+				
+				if(x>0) {
+					
+					ps.setInt(1, accountNo);
+					
+					ResultSet updatedRes = ps.executeQuery();
+					
+					while(updatedRes.next()) {
+						
+						finalBalance = updatedRes.getInt("balance");
+						
+					}
+					
+				}
+				
+			}
+			else {
+				throw new CustomerException("No such account in dataBase");
+			}
+			
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return finalBalance;
+	}
+
+
+	@Override
+	public int withdrawMoney(int accountNo, int amount) throws CustomerException {
+		int finalBalance = 0;
+		
+		try(Connection conn = DBConnectionUtil.dbConnector()){
+			
+			PreparedStatement ps = conn.prepareStatement("select * from accounts where accountId = ?");
+			
+			ps.setInt(1, accountNo);
+			
+			ResultSet result = ps.executeQuery();
+			
+			if(result.next()) {
+				
+				if(result.getInt("balance")<amount) {
+					throw new CustomerException("Low balance. . .");
+				}
+				
+				PreparedStatement withdrawStatement = conn.prepareStatement("update accounts set balance = balance - ? where accountId = ?");
+				
+				withdrawStatement.setInt(1, amount);
+				withdrawStatement.setInt(2, accountNo);
+				
+				int x = withdrawStatement.executeUpdate();
+				
+				if(x > 0) {
+					
+					ps.setInt(1, accountNo);
+					
+					ResultSet updatedresult = ps.executeQuery();
+					
+					while(updatedresult.next()) {
+						
+						finalBalance = updatedresult.getInt("balance");
+					
+					}
+					
+				}
+			}
+			else {
+				throw new CustomerException("No such account in dataBase");
+			}
+			
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return finalBalance;
 	}
 	
 

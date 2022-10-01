@@ -14,7 +14,11 @@ import com.sensitiveMeat4664.exceptions.CustomerException;
 import com.sensitiveMeat4664.utility.DBConnectionUtil;
 
 public class CustomerDaoImpl implements CustomerDao{
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> main
 	@Override
 	public String registerCustomer(Customer customer) throws CustomerException{
 		

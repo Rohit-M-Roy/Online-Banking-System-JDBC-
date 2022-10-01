@@ -1,7 +1,11 @@
 package com.sensitiveMeat4664.dao;
 
+<<<<<<< HEAD
 import java.sql.Connection;
 import java.util.List;
+=======
+
+>>>>>>> main
 
 import com.sensitiveMeat4664.bean.Account;
 import com.sensitiveMeat4664.bean.Customer;

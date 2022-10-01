@@ -36,7 +36,7 @@ public class CreateAccount {
 			System.out.println(e.getMessage());
 		}
 		
-
+		sc.close();
 	}
 
 }

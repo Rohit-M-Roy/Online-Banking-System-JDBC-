@@ -8,7 +8,7 @@ public class Account {
 	private long mobile;
 	private int balance;
 	
-	Account(){
+	public Account(){
 		
 	}
 	

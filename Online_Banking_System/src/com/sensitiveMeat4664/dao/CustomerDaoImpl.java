@@ -208,7 +208,7 @@ public class CustomerDaoImpl implements CustomerDao{
 							
 							System.out.println("Transfer successull");
 							
-							//Tracking into Transation Table
+							//Tracking into Transaction Table
 							
 							PreparedStatement trackDebitAndCredit = conn.prepareStatement("insert into transactions (type,amount,accountId) values(?,?,?)");
 							
@@ -324,8 +324,8 @@ public class CustomerDaoImpl implements CustomerDao{
 						
 						PreparedStatement trackDebitAndCredit = conn.prepareStatement("insert into transactions (type,amount,accountId) values(?,?,?)");
 						
-						trackDebitAndCredit.setString(1, "debit");
-						trackDebitAndCredit.setInt(2, -amount);
+						trackDebitAndCredit.setString(1, "credit");
+						trackDebitAndCredit.setInt(2, amount);
 						trackDebitAndCredit.setInt(3, accountNo);
 						trackDebitAndCredit.executeUpdate();
 						
@@ -383,8 +383,8 @@ public class CustomerDaoImpl implements CustomerDao{
 						finalBalance = updatedresult.getInt("balance");
 						
 						PreparedStatement trackDebitAndCredit = conn.prepareStatement("insert into transactions (type,amount,accountId) values(?,?,?)");
-						trackDebitAndCredit.setString(1, "credit");
-						trackDebitAndCredit.setInt(2, amount);
+						trackDebitAndCredit.setString(1, "debit");
+						trackDebitAndCredit.setInt(2, -amount);
 						trackDebitAndCredit.setInt(3, accountNo);
 						trackDebitAndCredit.executeUpdate();
 					

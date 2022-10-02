@@ -28,7 +28,7 @@ public class Bank {
 		System.out.println("Already a User (Press 2)");
 		System.out.println("--------------------------------------------");
 		System.out.println("Accountant Login(Press 3)");
-		System.out.println("Exit Input Applicatio (Press 4)");
+		System.out.println("Exit Input Application (Press 4)");
 		int firstSelection = sc.nextInt();
 		
 		switch(firstSelection) {
@@ -46,9 +46,9 @@ public class Bank {
 				
 			} catch (CustomerException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println(e.getMessage()+"\n\n");
 			}
-			
+			customerServices(sc);
 			break;
 			
 		case 2:
@@ -69,6 +69,8 @@ public class Bank {
 			System.out.println("**Not a valid Option**\n\n");
 			services();
 		}
+		
+		sc.close();
 	}
 	
 	public static Customer registrationDetails(Scanner sc) {
@@ -175,7 +177,7 @@ public class Bank {
 				finalBalanceW = dao.withdrawMoney(accountNoW, amountW);
 			} catch (CustomerException e) {
 				
-				System.out.println("Server Error");
+				System.out.println("Enter correct account number");
 				
 			}
 			

@@ -54,7 +54,7 @@ public class AccountantDaoImpl implements AccountantDao{
 		try {
 			message =  internalDao.registerCustomer(customer);
 		} catch (CustomerException e) {
-
+//			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
 		return message;
@@ -67,14 +67,23 @@ public class AccountantDaoImpl implements AccountantDao{
 		
 		try(Connection conn = DBConnectionUtil.dbConnector()){
 			
-			PreparedStatement ps = conn.prepareStatement("delete from accounts where accountId = ?");
+			PreparedStatement psT = conn.prepareStatement("delete from transactions where accountid = ?");
 			
-			ps.setInt(1, accountId);
+			psT.setInt(1, accountId);
 			
-			int x = ps.executeUpdate();
+			psT.executeUpdate();
 			
-			if(x > 0) {
-				operationCheck = true;
+			
+				PreparedStatement ps = conn.prepareStatement("delete from accounts where accountId = ?");
+			
+				ps.setInt(1, accountId);
+			
+				int x = ps.executeUpdate();
+			
+				if(x > 0) {
+					operationCheck = true;
+			
+			
 			}
 			
 		}

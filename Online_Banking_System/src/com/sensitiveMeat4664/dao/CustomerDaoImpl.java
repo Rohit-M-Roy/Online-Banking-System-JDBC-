@@ -221,6 +221,7 @@ public class CustomerDaoImpl implements CustomerDao{
 							trackDebitAndCredit.setString(1, "credit");
 							trackDebitAndCredit.setInt(2, transferAmount);
 							trackDebitAndCredit.setInt(3, accountNumber2);
+							trackDebitAndCredit.executeUpdate();
 							
 						}
 						
@@ -321,6 +322,13 @@ public class CustomerDaoImpl implements CustomerDao{
 						
 						finalBalance = updatedRes.getInt("balance");
 						
+						PreparedStatement trackDebitAndCredit = conn.prepareStatement("insert into transactions (type,amount,accountId) values(?,?,?)");
+						
+						trackDebitAndCredit.setString(1, "debit");
+						trackDebitAndCredit.setInt(2, -amount);
+						trackDebitAndCredit.setInt(3, accountNo);
+						trackDebitAndCredit.executeUpdate();
+						
 					}
 					
 				}
@@ -373,6 +381,12 @@ public class CustomerDaoImpl implements CustomerDao{
 					while(updatedresult.next()) {
 						
 						finalBalance = updatedresult.getInt("balance");
+						
+						PreparedStatement trackDebitAndCredit = conn.prepareStatement("insert into transactions (type,amount,accountId) values(?,?,?)");
+						trackDebitAndCredit.setString(1, "credit");
+						trackDebitAndCredit.setInt(2, amount);
+						trackDebitAndCredit.setInt(3, accountNo);
+						trackDebitAndCredit.executeUpdate();
 					
 					}
 					

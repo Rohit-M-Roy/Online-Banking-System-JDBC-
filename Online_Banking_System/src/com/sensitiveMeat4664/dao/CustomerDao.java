@@ -1,11 +1,9 @@
 package com.sensitiveMeat4664.dao;
 
-<<<<<<< HEAD
+
 import java.sql.Connection;
 import java.util.List;
-=======
 
->>>>>>> main
 
 import com.sensitiveMeat4664.bean.Account;
 import com.sensitiveMeat4664.bean.Customer;
@@ -19,4 +17,6 @@ public interface CustomerDao {
 	public boolean checkPresentCustomer(long mobileNumber);
 	public Account transferMoney(int accountNumber1, int accountNumber2, int transferAmount) throws CustomerException;
 	public List<Transaction> veiwTransactionHistory(int accountNumber) throws CustomerException;
+	public int depositMoney(int accountNo,int amount) throws CustomerException;
+	public int withdrawMoney(int accountNo,int amount) throws CustomerException;
 }

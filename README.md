@@ -6,3 +6,4 @@ Two Main Entities of this bank are
 2. Accountant
 
 The Customer Services
+Create multiple accounts under customer

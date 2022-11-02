@@ -28,4 +28,4 @@ Services Offered to the Accoutant
 
 - View Accounts
 
-- View All Accounts
+- View All Accounts.
